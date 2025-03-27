@@ -1,3 +1,9 @@
+ Feature: Search
+
+ As "name" user
+ I want to search for a movie
+ So that i can rate it on the site
+
  # Search Features
   Scenario: Searching for a movie
     Given I am on the homepage

@@ -1,3 +1,9 @@
+Feature: Rating
+
+As "name" user
+I want to rate a movie
+So that I can leave a rating on a movie I watched
+
 # Rating Features
   Scenario: Successfully rate a movie
     Given I am logged in as "user1"

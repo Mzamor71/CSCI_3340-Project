@@ -1,3 +1,9 @@
+Feature: Comment
+
+As "name" user
+I want to comment on a rating
+So that other people can see my opinion
+
 # Comment Features
   Scenario: Leaving a comment on someone else's rating
     Given I am logged in as "Charlie"
