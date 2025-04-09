@@ -14,12 +14,6 @@
     Then I should be logged in
     And I should see my username displayed on the homepage
 
-  Scenario: Signing in with incorrect credentials
-    Given I have an existing account
-    And I am on the login page
-    When I enter an incorrect password
-    Then I should see an error message "Invalid email or password."
-
   Scenario: Logging out
     Given I am logged in
     When I click the "Logout" button

@@ -11,4 +11,15 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  
+
+  resources :movies do
+    resources :reviews, only: [:new, :create]
+  end
+
+  resources :ratings, only: [:show] do
+    resources :comments, only: [:create]
+  end
+
+  root "movies#index"
 end
