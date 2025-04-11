@@ -2,7 +2,7 @@
   Scenario: Adding a movie to the watchlist
     Given I am logged in as "user1"
     And I navigate to the movie "The Prestige"
-    When I click the "Add to Watchlist" button
+    When I click the "Add to Watchlist" button in watchlist
     Then the movie should be added to my watchlist
 
   Scenario: Removing a movie from the watchlist

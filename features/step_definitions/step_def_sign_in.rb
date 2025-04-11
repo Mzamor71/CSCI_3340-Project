@@ -11,7 +11,11 @@ When("I enter a valid username, email, and password") do
 end
 
 When("I submit the form") do
-  click_button "Sign up"
+  if current_path.include?("sign_in") || current_path.include?("session")
+    click_button "Log in"
+  else
+    click_button "Sign up"
+  end
 end
 
 Then("my account should be created") do
@@ -61,7 +65,14 @@ When("I click the {string} button") do |button_name|
   click_link_or_button button_name
 end
 
+When("I click the logout button") do
+  click_button "Logout"
+end
+
 Then("I should be logged out") do
   expect(page).to have_content("Signed out successfully")
 end
 
+Then('I should be redirected to the login page') do
+  expect(current_path).to eq root_path
+end

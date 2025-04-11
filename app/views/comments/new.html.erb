@@ -1,11 +1,10 @@
 <% content_for :title, "New comment" %>
 
+<!-- app/views/comments/new.html.erb -->
 <h1>New comment</h1>
 
 <%= render "form", comment: @comment %>
 
-<br>
-
 <div>
-  <%= link_to "Back to comments", comments_path %>
+  <%= link_to "Back to movie", movie_path(@comment.rating.movie) %>
 </div>

@@ -1,6 +1,28 @@
+<!-- app/views/movies/show.html.erb -->
 <p style="color: green"><%= notice %></p>
-
+<h1 class="movie-title"><%= @movie.title %></h1>
 <%= render @movie %>
+
+<!-- Add this ratings section -->
+<div class="ratings-section">
+  <% @movie.ratings.each do |rating| %>
+    <div class="rating-item">
+      <p><%= rating.user.username %> rated it <%= rating.stars %> stars</p>
+      
+      <div class="comments-section">
+        <% rating.comments.each do |comment| %>
+          <div class="comment-item">
+            <span class="user-info"><%= comment.user.username %></span>: <%= comment.content %>
+            <p class="likes-count"><%= comment.likes_count %> likes</p>
+            <%= button_to "Like", like_comment_path(comment), method: :post, class: "like-button" %>
+          </div>
+        <% end %>
+      </div>
+      
+      <%= link_to "Comment", new_comment_path(rating_id: rating.id) %>
+    </div>
+  <% end %>
+</div>
 
 <div>
   <%= link_to "Edit this movie", edit_movie_path(@movie) %> |

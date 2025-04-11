@@ -1,7 +1,7 @@
 # features/step_definitions/watchlist_steps.rb
 
 # Scenario: Adding a movie to the watchlist
-When("I click the {string} button") do |button_text|
+When("I click the {string} button in watchlist") do |button_text|
   click_button(button_text)
 end
 

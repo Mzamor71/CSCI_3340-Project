@@ -1,5 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
+<% if user_signed_in? %>
+  <div class="user-info">
+    Welcome, <%= current_user.username %>!
+  </div>
+<% end %>
+
 <% content_for :title, "Movies" %>
 
 <h1>Movies</h1>

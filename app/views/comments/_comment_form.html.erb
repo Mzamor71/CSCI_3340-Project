@@ -1,0 +1,15 @@
+<div class="comment-form">
+  <%= form_with(model: Comment.new(rating_id: rating.id)) do |form| %>
+    <%= form.hidden_field :rating_id %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    
+    <div>
+      <%= form.label :content, "Your comment:" %>
+      <%= form.text_area :content %>
+    </div>
+    
+    <div>
+      <%= form.submit "Submit" %>
+    </div>
+  <% end %>
+</div>

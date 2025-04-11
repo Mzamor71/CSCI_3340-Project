@@ -27,5 +27,11 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
   end
 
+  resources :comments do
+    member do
+      post 'like'
+    end
+  end
+
   root "movies#index"
 end
