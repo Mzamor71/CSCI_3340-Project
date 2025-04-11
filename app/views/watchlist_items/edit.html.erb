@@ -1,0 +1,12 @@
+<% content_for :title, "Editing watchlist item" %>
+
+<h1>Editing watchlist item</h1>
+
+<%= render "form", watchlist_item: @watchlist_item %>
+
+<br>
+
+<div>
+  <%= link_to "Show this watchlist item", @watchlist_item %> |
+  <%= link_to "Back to watchlist items", watchlist_items_path %>
+</div>

@@ -10,22 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_07_162616) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_11_002127) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "rating_id", null: false
-    t.text "comment_text"
+    t.text "content"
+    t.integer "likes_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["rating_id"], name: "index_comments_on_rating_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "genres_movies", id: false, force: :cascade do |t|
+    t.integer "movie_id", null: false
+    t.integer "genre_id", null: false
+  end
+
   create_table "movies", force: :cascade do |t|
     t.string "title"
-    t.integer "year"
-    t.string "genre"
     t.text "description"
+    t.string "director"
+    t.integer "release_year"
+    t.string "trailer_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -33,8 +46,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_162616) do
   create_table "ratings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "movie_id", null: false
-    t.integer "score"
-    t.text "review"
+    t.integer "stars"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["movie_id"], name: "index_ratings_on_movie_id"
@@ -42,15 +54,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_162616) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.string "username"
-    t.string "email"
-    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "watchlist_items", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "movie_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_watchlist_items_on_movie_id"
+    t.index ["user_id"], name: "index_watchlist_items_on_user_id"
   end
 
   add_foreign_key "comments", "ratings"
   add_foreign_key "comments", "users"
   add_foreign_key "ratings", "movies"
   add_foreign_key "ratings", "users"
+  add_foreign_key "watchlist_items", "movies"
+  add_foreign_key "watchlist_items", "users"
 end

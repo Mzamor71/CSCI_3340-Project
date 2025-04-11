@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Watchlist items" %>
+
+<h1>Watchlist items</h1>
+
+<div id="watchlist_items">
+  <% @watchlist_items.each do |watchlist_item| %>
+    <%= render watchlist_item %>
+    <p>
+      <%= link_to "Show this watchlist item", watchlist_item %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New watchlist item", new_watchlist_item_path %>

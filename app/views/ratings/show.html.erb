@@ -1,29 +1,10 @@
-<%= link_to "Add Review", new_movie_review_path(@movie) %>
+<p style="color: green"><%= notice %></p>
 
-<h2>Rating for "<%= @rating.movie.title %>"</h2>
-<p><strong>By:</strong> <%= @rating.user.email %></p>
-<p><strong>Score:</strong> <%= @rating.score %>/10</p>
-<p><strong>Review:</strong><br><%= @rating.review %></p>
+<%= render @rating %>
 
-<hr>
+<div>
+  <%= link_to "Edit this rating", edit_rating_path(@rating) %> |
+  <%= link_to "Back to ratings", ratings_path %>
 
-<h3>Comments</h3>
-
-<% @comments.each do |comment| %>
-  <div style="margin-bottom: 1em;">
-    <strong><%= comment.user.email %>:</strong><br>
-    <%= comment.content %>
-  </div>
-<% end %>
-
-<% if user_signed_in? %>
-  <h4>Leave a comment:</h4>
-  <%= form_with(model: [@rating, @comment]) do |f| %>
-    <div>
-      <%= f.text_area :content %>
-    </div>
-    <%= f.submit "Comment" %>
-  <% end %>
-<% else %>
-  <p>You must <%= link_to "log in", new_user_session_path %> to comment.</p>
-<% end %>
+  <%= button_to "Destroy this rating", @rating, method: :delete %>
+</div>

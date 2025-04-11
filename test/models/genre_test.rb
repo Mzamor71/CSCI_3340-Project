@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ReviewsControllerTest < ActionDispatch::IntegrationTest
+class GenreTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
