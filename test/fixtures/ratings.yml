@@ -3,11 +3,9 @@
 one:
   user: one
   movie: one
-  score: 1
-  review: MyText
+  stars: 1
 
 two:
   user: two
   movie: two
-  score: 1
-  review: MyText
+  stars: 1

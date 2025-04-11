@@ -3,9 +3,11 @@
 one:
   user: one
   rating: one
-  comment_text: MyText
+  content: MyText
+  likes_count: 1
 
 two:
   user: two
   rating: two
-  comment_text: MyText
+  content: MyText
+  likes_count: 1

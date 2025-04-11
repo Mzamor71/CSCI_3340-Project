@@ -1,15 +1,11 @@
-<h2>Rate "<%= @movie.title %>"</h2>
+<% content_for :title, "New rating" %>
 
-<%= form_with(model: [@movie, @rating]) do |f| %>
-  <div>
-    <%= f.label :score %><br>
-    <%= f.number_field :score, in: 1..10 %>
-  </div>
+<h1>New rating</h1>
 
-  <div>
-    <%= f.label :review %><br>
-    <%= f.text_area :review %>
-  </div>
+<%= render "form", rating: @rating %>
 
-  <%= f.submit "Submit Rating" %>
-<% end %>
+<br>
+
+<div>
+  <%= link_to "Back to ratings", ratings_path %>
+</div>
