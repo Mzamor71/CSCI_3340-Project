@@ -41,7 +41,7 @@ RSpec.feature "Comment Feature", type: :feature do
 
       within(".comment-form") do
         fill_in "comment[content]", with: "Great rating! I totally agree."
-        click_button "Submit"
+        click_button "Submit Comment"
       end
 
       within(".rating-item", text: "Alice") do
@@ -66,7 +66,7 @@ RSpec.feature "Comment Feature", type: :feature do
     within(".rating-item", text: "Alice") do
       within(".comment-item", text: "Charlie") do
         expect(page).to have_content("0 likes")
-        click_link_or_button "Like"
+        click_button "Like"
         expect(page).to have_content("1 like")
       end
     end
