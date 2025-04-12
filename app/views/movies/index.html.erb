@@ -6,6 +6,24 @@
   </div>
 <% end %>
 
+<div class="search-section">
+  <%= form_with url: search_path, method: :get, local: true do |form| %>
+    <div class="field">
+      <%= form.label :search, "Search by title" %>
+      <%= form.text_field :search %>
+      <%= form.submit "Search" %>
+    </div>
+  <% end %>
+  
+  <%= form_with url: search_path, method: :get, local: true do |form| %>
+    <div class="field">
+      <%= form.label :genre, "Filter by genre" %>
+      <%= form.select :genre, Genre.all.collect { |g| [g.name, g.id] }, include_blank: "Select a genre" %>
+      <%= form.submit "Filter" %>
+    </div>
+  <% end %>
+</div>
+
 <% content_for :title, "Movies" %>
 
 <h1>Movies</h1>

@@ -60,11 +60,11 @@ class MoviesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_movie
-      @movie = Movie.find(params.expect(:id))
+      @movie = Movie.find(params.require(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def movie_params
-      params.expect(movie: [ :title, :description, :director, :release_year, :trailer_url ])
+      params.require(:movie).permit(:title, :description, :director, :release_year, :trailer_url)
     end
 end
