@@ -18,7 +18,7 @@
                 class: "btn btn-outline-secondary" %>
 
     <%= link_to "⬅️ Back to Comments",
-                comments_path,
+                movie_comments_path(@comment.rating.movie),
                 class: "btn btn-outline-dark" %>
 
     <%= button_to "🗑️ Delete Comment",

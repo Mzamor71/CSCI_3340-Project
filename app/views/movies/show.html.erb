@@ -52,8 +52,9 @@
 
       <!-- Ratings & Comments -->
       <div class="card mb-4">
-        <div class="card-header">
-          All Ratings & Comments
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>All Ratings & Comments</span>
+          <%= link_to "View All Comments", movie_comments_path(@movie), class: "btn btn-sm btn-outline-primary" %>
         </div>
         <div class="card-body">
           <% @movie.ratings.includes(:user, comments: :user).each do |rating| %>

@@ -6,8 +6,13 @@
   <%= render "form", comment: @comment %>
 
   <div class="mt-3">
-    <%= link_to "⬅️ Back to Movie",
-                movie_path(@comment.rating.movie),
-                class: "btn btn-secondary" %>
+    <% if @movie %>
+      <%= link_to "⬅️ Back to Movie", movie_path(@movie), class: "btn btn-secondary" %>
+      <%= link_to "⬅️ Back to Comments", movie_comments_path(@movie), class: "btn btn-outline-secondary" %>
+    <% elsif @comment.rating&.movie %>
+      <%= link_to "⬅️ Back to Movie", movie_path(@comment.rating.movie), class: "btn btn-secondary" %>
+    <% else %>
+      <%= link_to "⬅️ Back to All Movies", movies_path, class: "btn btn-secondary" %>
+    <% end %>
   </div>
 </div>

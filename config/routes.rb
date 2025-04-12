@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :ratings
     resources :reviews, only: [:new, :create]
     resources :watchlist_items, only: [:create, :destroy]
+    get 'comments', to: 'comments#index', as: 'comments'
   end
 
   # The rest of your routes remain the same
