@@ -29,7 +29,7 @@ RSpec.feature "Comment Feature", type: :feature do
 
   scenario "Charlie leaves a comment on Alice's rating" do
     visit movie_path(movie)
-    fill_in "comment[content]", with: "Great review, Alice!"
+    fill_in "Your Comment", with: "Great review, Alice!"
     click_button "Submit Comment"
 
     expect(page).to have_content("Great review, Alice!")
@@ -38,7 +38,7 @@ RSpec.feature "Comment Feature", type: :feature do
 
   scenario "Another user likes Charlie's comment" do
     visit movie_path(movie)
-    fill_in "comment[content]", with: "Nice one!"
+    fill_in "Your Comment", with: "Nice one!"
     click_button "Submit Comment"
     click_button "Logout"
 
