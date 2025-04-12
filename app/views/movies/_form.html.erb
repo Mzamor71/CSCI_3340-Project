@@ -1,4 +1,15 @@
-<%= form_with model: movie, local: true do |form| %>
+<%= form_with(model: movie) do |form| %>
+  <% if movie.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(movie.errors.count, "error") %> prohibited this movie from being saved:</h2>
+      <ul>
+        <% movie.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
     <%= form.text_field :title, class: "form-control" %>
@@ -24,5 +35,17 @@
     <%= form.text_field :trailer_url, class: "form-control" %>
   </div>
 
-  <%= form.submit class: "btn btn-primary" %>
+  <div class="mb-3">
+    <%= form.label :genre_ids, "Genres", class: "form-label" %>
+    <%= form.collection_check_boxes :genre_ids, Genre.all, :id, :name do |b| %>
+      <div class="form-check">
+        <%= b.check_box(class: "form-check-input") %>
+        <%= b.label(class: "form-check-label") %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save Movie", class: "btn btn-primary" %>
+  </div>
 <% end %>
