@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :movies do
     resources :ratings # Added this line to nest ratings under movies
     resources :reviews, only: [:new, :create]
+    resources :watchlist_items, only: [:create, :destroy]
   end
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

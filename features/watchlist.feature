@@ -1,4 +1,5 @@
-# Watchlist Features
+Feature: Watchlist Features
+
   Scenario: Adding a movie to the watchlist
     Given I am logged in as "user1"
     And I navigate to the movie "The Prestige"

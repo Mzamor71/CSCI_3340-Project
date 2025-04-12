@@ -21,14 +21,15 @@ class WatchlistItemsController < ApplicationController
 
   # POST /watchlist_items or /watchlist_items.json
   def create
-    @watchlist_item = WatchlistItem.new(watchlist_item_params)
-
+    @movie = Movie.find(params[:movie_id])
+    @watchlist_item = current_user.watchlist_items.build(movie: @movie)
+    
     respond_to do |format|
       if @watchlist_item.save
-        format.html { redirect_to @watchlist_item, notice: "Watchlist item was successfully created." }
+        format.html { redirect_to @movie, notice: "Movie added to your watchlist." }
         format.json { render :show, status: :created, location: @watchlist_item }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { redirect_to @movie, alert: "Couldn't add to watchlist." }
         format.json { render json: @watchlist_item.errors, status: :unprocessable_entity }
       end
     end
@@ -49,22 +50,25 @@ class WatchlistItemsController < ApplicationController
 
   # DELETE /watchlist_items/1 or /watchlist_items/1.json
   def destroy
-    @watchlist_item.destroy!
-
+    @watchlist_item = WatchlistItem.find(params[:id])
+    @movie = @watchlist_item.movie
+    @watchlist_item.destroy
+    
     respond_to do |format|
-      format.html { redirect_to watchlist_items_path, status: :see_other, notice: "Watchlist item was successfully destroyed." }
+      format.html { redirect_to @movie, notice: "Movie removed from your watchlist." }
       format.json { head :no_content }
     end
   end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_watchlist_item
-      @watchlist_item = WatchlistItem.find(params.expect(:id))
+      @watchlist_item = WatchlistItem.find(params[:id]) 
     end
 
     # Only allow a list of trusted parameters through.
     def watchlist_item_params
-      params.expect(watchlist_item: [ :user_id, :movie_id ])
+      params.require(:watchlist_item).permit(:user_id, :movie_id)
     end
 end

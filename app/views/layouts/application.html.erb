@@ -27,6 +27,7 @@
     <header>
       <nav>
         <% if user_signed_in? %>
+          <div class="user-info"><%= current_user.username %></div>
           <%= button_to "Logout", destroy_user_session_path, method: :delete %>
         <% else %>
           <%= link_to "Login", new_user_session_path %>

@@ -30,6 +30,17 @@
       <h3>Rate this movie:</h3>
       <%= render 'ratings/form', rating: @movie.ratings.build, movie: @movie %>
     <% end %>
+    
+    <!-- Watchlist Button Section -->
+    <div class="watchlist-actions">
+      <% if current_user.watchlist_items.exists?(movie_id: @movie.id) %>
+        <%= button_to "Remove from Watchlist", movie_watchlist_item_path(@movie, current_user.watchlist_items.find_by(movie_id: @movie.id)), 
+                    method: :delete, class: "btn btn-danger" %>
+      <% else %>
+        <%= button_to "Add to Watchlist", movie_watchlist_items_path(@movie), 
+                    method: :post, class: "btn btn-primary" %>
+      <% end %>
+    </div>
   <% else %>
     <p><%= link_to "Log in to rate this movie", new_user_session_path %></p>
   <% end %>
