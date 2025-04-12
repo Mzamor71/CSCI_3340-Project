@@ -15,5 +15,5 @@ So that other people can see my opinion
   Scenario: Liking a comment
     Given I am logged in as "user2"
     And I see a comment by "Charlie" on "Alice's" rating
-    When I click the "Like" button
+    When I click the "Like" button for the comment
     Then the like count for "Charlie's" comment should increase by 1

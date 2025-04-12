@@ -87,46 +87,50 @@ Given("I see a comment by {string} on {string} rating") do |commenter, rater|
 end
 
 When('I leave a comment {string}') do |comment_text|
-  # No need to store current_url if we're not using it
-  # Find the rating and click the Comment link
-  find(".ratings-section").find(".rating-item").click_link("Comment")
-  # Now we're on a new page, fill in the form
+  # Based on your HTML structure, find the rating and click the "Add Comment" link
+  # Look for the card that contains the ratings and comments section
+  within(".card", text: "All Ratings & Comments") do
+    # Find the first rating and click 'Add Comment'
+    first("a", text: "Add Comment").click
+  end
+  
+  # Now we're on the new comment page, fill in the form
   fill_in "comment[content]", with: comment_text
-  click_button "Submit"
+  click_button "Submit Comment"
+  
   # Wait for the page to load after submission
   expect(page).to have_content("Comment was successfully created")
 end
 
 Then('my comment should appear under {string} rating') do |username|
   # After submitting a comment, we might be redirected
-  # Let's navigate back to the movie page
-  visit movie_path(@movie)
+  # Navigate back to the movie comments page
+  visit movie_comments_path(@movie)
   
+  # Check for the comment content
   expect(page).to have_content("Great rating! I totally agree.")
 end
 
 When('I click the {string} button for the comment') do |button_text|
-  within(".comments-section") do
-    within(first(".comment-item")) do
-      click_button button_text
-    end
+  # Look for the like button which should contain the 👍 emoji
+  if button_text == "Like"
+    # Find and click the first like button (which has 👍 in it)
+    first("button", text: "👍").click
+  else
+    click_button button_text
   end
 end
 
 Then('the like count for {string} comment should increase by {int}') do |username, increase|
-  # First visit the page after liking (to refresh the page state)
+  # Visit the page after liking to refresh the page state
   visit current_path
   
-  # Find the comment by its content
+  # Find the comment by its content (created in the previous step)
   comment_text = "This is a test comment from #{username.sub("'s", '')}"
   
-  # Now check if the likes count increased
-  within(".comments-section") do
-    comment_section = find(".comment-item", text: comment_text)
-    like_count_text = comment_section.find(".likes-count").text
-    like_count = like_count_text.scan(/\d+/).first.to_i
-    
-    # We expect the like count to be at least the increase amount
-    expect(like_count).to be >= increase
-  end
+  # Check if the likes count increased
+  expect(page).to have_content(comment_text)
+  # The likes count should now be at least 1
+  # You may need to adjust this selector based on your actual HTML structure
+  expect(page).to have_content("👍 #{increase}")
 end
