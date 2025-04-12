@@ -1,31 +1,43 @@
-<div class="rating-form">
-  <%= form_with(model: [@movie, @rating || @movie.ratings.build]) do |form| %>
-    <% if form.object.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(rating.errors.count, "error") %> prohibited this rating from being saved:</h2>
+<div class="card mb-4 shadow-sm">
+  <div class="card-body">
+    <%= form_with(model: [@movie, @rating || @movie.ratings.build], local: true) do |form| %>
+      <% if form.object.errors.any? %>
+        <div class="alert alert-danger">
+          <h5 class="alert-heading">
+            <%= pluralize(form.object.errors.count, "error") %> prohibited this rating:
+          </h5>
+          <ul class="mb-0">
+            <% form.object.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-        <ul>
-          <% rating.errors.each do |error| %>
-            <li><%= error.full_message %></li>
+      <%= form.hidden_field :user_id,  value: current_user.id if current_user %>
+      <%= form.hidden_field :movie_id, value: @movie.id %>
+
+      <div class="mb-3">
+        <label class="form-label">Your Rating</label>
+        <div class="star-rating">
+          <%# Render 5 radios in reverse order for CSS ~ trick %>
+          <% (1..5).reverse_each do |star| %>
+            <%= form.radio_button :stars, star,
+                  id: "rating_stars_#{star}",
+                  class: "star-input" %>
+            <%= form.label :stars, nil,
+                  for: "rating_stars_#{star}",
+                  class: "star-label" do %>
+              <i class="fa-solid fa-star"></i>
+            <% end %>
           <% end %>
-        </ul>
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <%= form.submit "Submit Rating",
+              class: "btn btn-warning btn-lg" %>
       </div>
     <% end %>
-
-    <%= form.hidden_field :user_id, value: current_user.id if current_user %>
-    <%= form.hidden_field :movie_id, value: @movie.id %>
-    
-    <div class="star-rating">
-      <% (1..5).each do |star| %>
-        <label class="star-<%= star %>">
-          <%= form.radio_button :stars, star, class: "star-radio" %>
-          <span>★</span>
-        </label>
-      <% end %>
-    </div>
-    
-    <div>
-      <%= form.submit "Submit Rating", class: "btn btn-primary" %>
-    </div>
-  <% end %>
+  </div>
 </div>

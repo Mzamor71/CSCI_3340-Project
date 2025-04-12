@@ -1,22 +1,20 @@
-<div id="<%= dom_id comment %>">
-  <p>
-    <strong>User:</strong>
-    <%= comment.user_id %>
-  </p>
+<div id="<%= dom_id(comment) %>" class="card mb-3 shadow-sm">
+  <div class="card-body">
+    <h6 class="card-subtitle mb-2 text-muted">
+      <%= link_to comment.user.username, user_path(comment.user), class: "text-decoration-none" %>
+      on
+      <%= link_to comment.rating.movie.title, movie_path(comment.rating.movie), class: "link-primary" %>
+    </h6>
 
-  <p>
-    <strong>Rating:</strong>
-    <%= comment.rating_id %>
-  </p>
+    <p class="card-text"><%= comment.content %></p>
 
-  <p>
-    <strong>Content:</strong>
-    <%= comment.content %>
-  </p>
+    <p class="text-muted mb-2">
+      <small>Likes: <%= comment.likes_count %></small>
+    </p>
 
-  <p>
-    <strong>Likes count:</strong>
-    <%= comment.likes_count %>
-  </p>
-
+    <%= button_to "👍 Like",
+                  like_comment_path(comment),
+                  method: :post,
+                  class: "btn btn-outline-secondary btn-sm" %>
+  </div>
 </div>

@@ -1,40 +1,60 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "SceneSync" %>
+
+<% if notice %>
+  <div class="alert alert-success"><%= notice %></div>
+<% end %>
 
 <% if user_signed_in? %>
-  <div class="user-info">
-    Welcome, <%= current_user.username %>!
+  <div class="alert alert-info">
+    🎬 Welcome, <strong><%= current_user.username %></strong>!
   </div>
 <% end %>
 
-<div class="search-section">
-  <%= form_with url: search_path, method: :get, local: true do |form| %>
-    <div class="field">
-      <%= form.label :search, "Search by title" %>
-      <%= form.text_field :search %>
-      <%= form.submit "Search" %>
+<div class="container my-4">
+  <h1 class="mb-4">🎥 SceneSync</h1>
+
+  <div class="card mb-4 p-3">
+    <h2 class="h5">Search & Filter</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <%= form_with url: search_path, method: :get, local: true do |form| %>
+          <div class="mb-3">
+            <%= form.label :search, "Search by title", class: "form-label" %>
+            <%= form.text_field :search, class: "form-control", placeholder: "Enter movie title" %>
+          </div>
+          <%= form.submit "Search", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+
+      <div class="col-md-6">
+        <%= form_with url: search_path, method: :get, local: true do |form| %>
+          <div class="mb-3">
+            <%= form.label :genre, "Filter by genre", class: "form-label" %>
+            <%= form.select :genre, Genre.all.collect { |g| [g.name, g.id] }, { include_blank: "Select a genre" }, class: "form-select" %>
+          </div>
+          <%= form.submit "Filter", class: "btn btn-secondary" %>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-  
-  <%= form_with url: search_path, method: :get, local: true do |form| %>
-    <div class="field">
-      <%= form.label :genre, "Filter by genre" %>
-      <%= form.select :genre, Genre.all.collect { |g| [g.name, g.id] }, include_blank: "Select a genre" %>
-      <%= form.submit "Filter" %>
-    </div>
-  <% end %>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @movies.each do |movie| %>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <%= render movie %>
+            <p><strong>Average Rating:</strong> ⭐ <%= movie.average_rating || "N/A" %></p>
+          </div>
+          <div class="card-footer">
+            <%= link_to "🎬 View Details", movie_path(movie), class: "btn btn-outline-primary btn-sm" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "➕ Add New Movie", new_movie_path, class: "btn btn-success" %>
+  </div>
 </div>
-
-<% content_for :title, "Movies" %>
-
-<h1>Movies</h1>
-
-<div id="movies">
-  <% @movies.each do |movie| %>
-    <%= render movie %>
-    <p>
-      <%= link_to "Show this movie", movie %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New movie", new_movie_path %>

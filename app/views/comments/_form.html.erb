@@ -1,26 +1,30 @@
-<!-- app/views/comments/_form.html.erb -->
-<%= form_with(model: comment, html: { class: "comment-form" }) do |form| %>
-  <% if comment.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+<div class="card mb-4 shadow-sm">
+  <div class="card-body">
+    <%= form_with(model: comment, local: true) do |form| %>
+      <% if comment.errors.any? %>
+        <div class="alert alert-danger">
+          <h5 class="alert-heading">
+            <%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:
+          </h5>
+          <ul class="mb-0">
+            <% comment.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-      <ul>
-        <% comment.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+      <%= form.hidden_field :user_id,  value: current_user.id %>
+      <%= form.hidden_field :rating_id %>
 
-  <%= form.hidden_field :user_id, value: current_user.id %>
-  <%= form.hidden_field :rating_id %>
+      <div class="mb-3">
+        <%= form.label :content, "Your Comment", class: "form-label" %>
+        <%= form.text_area :content, class: "form-control", rows: 3 %>
+      </div>
 
-  <div>
-    <%= form.label :content, style: "display: block" %>
-    <%= form.text_area :content %>
+      <div class="d-grid">
+        <%= form.submit "Submit Comment", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-
-  <div>
-    <%= form.submit "Submit" %>
-  </div>
-<% end %>
+</div>
