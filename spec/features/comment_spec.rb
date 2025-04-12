@@ -20,7 +20,7 @@ RSpec.feature "Comment Feature", type: :feature do
     # Make sure this field name matches your actual rating form
     choose "rating_stars_4"
     click_button "Submit Rating"
-    click_link "Log out" # Adjust button text if different
+    click_link "Logout" # Adjust button text if different
     
     # Sign up Charlie
     visit '/users/sign_up' # Adjust path if needed
