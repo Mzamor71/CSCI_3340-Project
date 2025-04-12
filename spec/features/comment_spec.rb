@@ -17,7 +17,7 @@ RSpec.feature "Comment Feature", type: :feature do
     click_button "Sign up"
     
     visit movie_path(movie)
-    expect(page).to have_selector("form textarea[name='comment[content]']")
+    expect(page).to have_selector("form textarea#comment_content")
     # Make sure this field name matches your actual rating form
     choose "rating_stars_4"
     click_button "Submit Rating"
