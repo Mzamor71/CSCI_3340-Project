@@ -60,11 +60,11 @@ class GenresController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_genre
-      @genre = Genre.find(params.expect(:id))
+      @genre = Genre.find(params.require(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def genre_params
-      params.expect(genre: [ :name ])
+      params.require(:genre).permit(:name)
     end
 end

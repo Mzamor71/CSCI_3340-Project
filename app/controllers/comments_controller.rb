@@ -11,8 +11,8 @@ class CommentsController < ApplicationController
   end
 
   # GET /comments/new
-  def new
-    @comment = Comment.new
+  def new 
+    @comment = Comment.new(rating_id: params[:rating_id], user_id: current_user.id)
   end
 
   # GET /comments/1/edit
@@ -57,14 +57,24 @@ class CommentsController < ApplicationController
     end
   end
 
+  def like
+    @comment = Comment.find(params[:id])
+    @comment.increment!(:likes_count)
+    redirect_back(fallback_location: root_path, notice: "Comment liked successfully.")
+  end
+  
+  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
-      @comment = Comment.find(params.expect(:id))
+      @comment = Comment.find(params.require(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def comment_params
-      params.expect(comment: [ :user_id, :rating_id, :content, :likes_count ])
+      params.require(:comment).permit ([:user_id, :rating_id, :content, :likes_count])
     end
+
+   
 end

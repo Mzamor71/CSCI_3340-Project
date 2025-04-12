@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   resources :comments
   resources :ratings
   resources :genres
-  resources :movies
+  resources :movies do
+    resources :ratings # Added this line to nest ratings under movies
+    resources :reviews, only: [:new, :create]
+    resources :watchlist_items, only: [:create, :destroy]
+  end
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -17,14 +21,16 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  
-
-  resources :movies do
-    resources :reviews, only: [:new, :create]
-  end
+  get '/search', to: 'search#index'
 
   resources :ratings, only: [:show] do
     resources :comments, only: [:create]
+  end
+
+  resources :comments do
+    member do
+      post 'like'
+    end
   end
 
   root "movies#index"

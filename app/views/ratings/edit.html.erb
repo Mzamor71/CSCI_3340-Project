@@ -1,12 +1,38 @@
-<% content_for :title, "Editing rating" %>
-
 <h1>Editing rating</h1>
 
-<%= render "form", rating: @rating %>
+<div class="rating-form">
+  <%= form_with(model: @rating) do |form| %>
+    <% if @rating.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(@rating.errors.count, "error") %> prohibited this rating from being saved:</h2>
 
-<br>
+        <ul>
+          <% @rating.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form.hidden_field :user_id %>
+    <%= form.hidden_field :movie_id %>
+    
+    <div class="star-rating">
+      <% (1..5).each do |star| %>
+        <label class="star-<%= star %>">
+          <%= form.radio_button :stars, star, class: "star-radio" %>
+          <span>★</span>
+        </label>
+      <% end %>
+    </div>
+    
+    <div>
+      <%= form.submit "Update Rating", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
 
 <div>
   <%= link_to "Show this rating", @rating %> |
-  <%= link_to "Back to ratings", ratings_path %>
+  <%= link_to "Back to movie", movie_path(@rating.movie) %>
 </div>

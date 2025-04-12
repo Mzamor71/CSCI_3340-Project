@@ -1,0 +1,21 @@
+<h1>Search Results</h1>
+
+<div class="search-results">
+  <% if @movies.any? %>
+    <% @movies.each do |movie| %>
+      <div class="movie">
+        <h2 class="movie-title"><%= link_to movie.title, movie %></h2>
+        <p><%= movie.description %></p>
+        <p>Director: <%= movie.director %></p>
+        <p>Year: <%= movie.release_year %></p>
+        <% if movie.genres.any? %>
+          <p>Genres: <%= movie.genres.map(&:name).join(", ") %></p>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No movies found matching your criteria.</p>
+  <% end %>
+</div>
+
+<%= link_to "Back to homepage", root_path %>

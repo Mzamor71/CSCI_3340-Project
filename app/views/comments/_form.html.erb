@@ -1,4 +1,5 @@
-<%= form_with(model: comment) do |form| %>
+<!-- app/views/comments/_form.html.erb -->
+<%= form_with(model: comment, html: { class: "comment-form" }) do |form| %>
   <% if comment.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
@@ -11,27 +12,15 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.label :rating_id, style: "display: block" %>
-    <%= form.text_field :rating_id %>
-  </div>
+  <%= form.hidden_field :user_id, value: current_user.id %>
+  <%= form.hidden_field :rating_id %>
 
   <div>
     <%= form.label :content, style: "display: block" %>
-    <%= form.textarea :content %>
+    <%= form.text_area :content %>
   </div>
 
   <div>
-    <%= form.label :likes_count, style: "display: block" %>
-    <%= form.number_field :likes_count %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "Submit" %>
   </div>
 <% end %>
