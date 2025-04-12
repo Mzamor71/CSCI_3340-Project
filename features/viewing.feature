@@ -11,7 +11,7 @@ Scenario: Viewing average rating after multiple users rate a movie
 
 Scenario: Viewing a movie trailer
   Given I view details for the movie "Oppenheimer"
-  When I click on the "Watch Trailer" button
+  When I click on the "Watch Trailer" play button
   Then the trailer should play in a pop-up or embedded player
 
 Scenario: Viewing movie details

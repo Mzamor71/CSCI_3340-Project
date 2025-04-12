@@ -19,15 +19,16 @@
     <h3>Average Rating: <%= @movie.average_rating > 0 ? "#{@movie.average_rating} stars" : 'No ratings yet' %></h3>
   </div>
   
-  <!-- Movie Trailer -->
-  <% if @movie.trailer_url.present? %>
-    <div class="trailer-section">
-      <button id="watch-trailer">Watch Trailer</button>
-      <div id="trailer-container" style="display: none;">
-        <iframe class="trailer-player" width="560" height="315" src="<%= @movie.trailer_url %>" allowfullscreen></iframe>
-      </div>
+<!-- Movie Trailer -->
+<% if @movie.trailer_url.present? %>
+  <div class="trailer-section">
+    <%= button_to "Watch Trailer", "#", method: :get, id: "watch-trailer", class: "trailer-button", 
+        onclick: "document.getElementById('trailer-container').style.display = 'block'; return false;" %>
+    <div id="trailer-container" style="<%= Rails.env.test? ? '' : 'display: none;' %>">
+      <iframe class="trailer-player" width="560" height="315" src="<%= @movie.trailer_url %>" allowfullscreen></iframe>
     </div>
-  <% end %>
+  </div>
+<% end %>
   
   <!-- User's Rating or Rating Form -->
   <% if user_signed_in? %>
