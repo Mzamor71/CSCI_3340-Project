@@ -35,7 +35,7 @@ RSpec.feature "Comment Feature", type: :feature do
     visit movie_path(movie)
     
     # Update to match your comment form field names
-    fill_in "content", with: "Great review, Alice!"
+    fill_in "comment[content]", with: "Great review, Alice!"
     click_button "Post Comment"
     
     expect(page).to have_content("Great review, Alice!")
@@ -44,7 +44,7 @@ RSpec.feature "Comment Feature", type: :feature do
   
   scenario "Another user likes Charlie's comment" do
     visit movie_path(movie)
-    fill_in "content", with: "Nice one!"
+    fill_in "comment[content]", with: "Nice one!"
     click_button "Post Comment"
     click_link "Log out" # Adjust button text if different
     
