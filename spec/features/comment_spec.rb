@@ -18,7 +18,7 @@ RSpec.feature "Comment Feature", type: :feature do
     
     visit movie_path(movie)
     # Make sure this field name matches your actual rating form
-    fill_in "rating[stars]", with: "4"
+    choose "rating_stars_4"
     click_button "Submit Rating"
     click_link "Log out" # Adjust button text if different
     
