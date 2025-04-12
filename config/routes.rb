@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'my_watchlist', to: 'watchlist_items#my_watchlist', as: :my_watchlist
   resources :watchlist_items
   resources :comments
   resources :ratings

@@ -15,6 +15,10 @@ class WatchlistItemsController < ApplicationController
     @watchlist_item = WatchlistItem.new
   end
 
+  def my_watchlist
+  @watchlist_items = current_user.watchlist_items.includes(:movie)
+  end
+
   # GET /watchlist_items/1/edit
   def edit
   end
