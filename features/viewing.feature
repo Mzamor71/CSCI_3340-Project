@@ -10,7 +10,7 @@ Scenario: Viewing average rating after multiple users rate a movie
   Then the average rating should be "4.5 stars"
 
 Scenario: Viewing a movie trailer
-  Given I navigate to the movie "Oppenheimer"
+  Given I view details for the movie "Oppenheimer"
   When I click on the "Watch Trailer" button
   Then the trailer should play in a pop-up or embedded player
 

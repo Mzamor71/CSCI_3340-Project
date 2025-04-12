@@ -1,32 +1,65 @@
 <!-- app/views/movies/show.html.erb -->
 <p style="color: green"><%= notice %></p>
-<h1 class="movie-title"><%= @movie.title %></h1>
-<%= render @movie %>
 
-<!-- Add this ratings section -->
-<div class="ratings-section">
-  <% @movie.ratings.each do |rating| %>
-    <div class="rating-item">
-      <p><%= rating.user.username %> rated it <%= rating.stars %> stars</p>
-      
-      <div class="comments-section">
-        <% rating.comments.each do |comment| %>
-          <div class="comment-item">
-            <span class="user-info"><%= comment.user.username %></span>: <%= comment.content %>
-            <p class="likes-count"><%= comment.likes_count %> likes</p>
-            <%= button_to "Like", like_comment_path(comment), method: :post, class: "like-button" %>
-          </div>
-        <% end %>
-      </div>
-      
-      <%= link_to "Comment", new_comment_path(rating_id: rating.id) %>
-    </div>
+<div class="movie-details">
+  <h1 class="movie-title"><%= @movie.title %></h1>
+  
+  <!-- Movie details -->
+  <p><strong>Director:</strong> <%= @movie.director %></p>
+  <p><strong>Release Year:</strong> <%= @movie.release_year %></p>
+  <p><strong>Description:</strong> <%= @movie.description %></p>
+  
+  <!-- Genres -->
+  <% if @movie.genres.any? %>
+    <p><strong>Genres:</strong> <%= @movie.genres.pluck(:name).join(", ") %></p>
   <% end %>
-</div>
+  
+  <!-- Average Rating -->
+  <div class="overall-rating">
+    <h3>Average Rating: <%= @movie.average_rating > 0 ? "#{@movie.average_rating} stars" : 'No ratings yet' %></h3>
+  </div>
+  
+  <!-- User's Rating or Rating Form -->
+  <% if user_signed_in? %>
+    <% if current_user_rating = @movie.ratings.find_by(user: current_user) %>
+      <div class="user-rating">
+        <p>Your rating: <%= current_user_rating.stars %> stars</p>
+        <%= link_to "Edit Rating", edit_rating_path(current_user_rating), class: "btn btn-secondary" %>
+      </div>
+    <% else %>
+      <h3>Rate this movie:</h3>
+      <%= render 'ratings/form', rating: @movie.ratings.build, movie: @movie %>
+    <% end %>
+  <% else %>
+    <p><%= link_to "Log in to rate this movie", new_user_session_path %></p>
+  <% end %>
+  
+  <!-- All Ratings and Comments -->
+  <div class="ratings-section">
+    <h3>All Ratings</h3>
+    <% @movie.ratings.includes(:user, comments: :user).each do |rating| %>
+      <div class="rating-item">
+        <p><%= rating.user.username %> rated it <%= rating.stars %> stars</p>
+        
+        <div class="comments-section">
+          <% rating.comments.each do |comment| %>
+            <div class="comment-item">
+              <span class="user-info"><%= comment.user.username %></span>: <%= comment.content %>
+              <p class="likes-count"><%= comment.likes_count %> likes</p>
+              <%= button_to "Like", like_comment_path(comment), method: :post, class: "like-button" %>
+            </div>
+          <% end %>
+        </div>
+        
+        <%= link_to "Comment", new_comment_path(rating_id: rating.id) %>
+      </div>
+    <% end %>
+  </div>
 
-<div>
-  <%= link_to "Edit this movie", edit_movie_path(@movie) %> |
-  <%= link_to "Back to movies", movies_path %>
+  <div>
+    <%= link_to "Edit this movie", edit_movie_path(@movie) %> |
+    <%= link_to "Back to movies", movies_path %>
 
-  <%= button_to "Destroy this movie", @movie, method: :delete %>
+    <%= button_to "Destroy this movie", @movie, method: :delete %>
+  </div>
 </div>

@@ -25,7 +25,7 @@ Then("the average rating should be {string}") do |expected_rating|
 end
 
 # Scenario: Viewing a movie trailer
-Given("I navigate to the movie {string}") do |movie_title|
+Given("I view details for the movie {string}") do |movie_title|
   movie = Movie.find_by(title: movie_title) || Movie.create!(
     title: movie_title,
     trailer_url: "https://example.com/trailers/#{movie_title.downcase.gsub(' ', '_')}"
