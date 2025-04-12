@@ -19,6 +19,16 @@
     <h3>Average Rating: <%= @movie.average_rating > 0 ? "#{@movie.average_rating} stars" : 'No ratings yet' %></h3>
   </div>
   
+  <!-- Movie Trailer -->
+  <% if @movie.trailer_url.present? %>
+    <div class="trailer-section">
+      <button id="watch-trailer">Watch Trailer</button>
+      <div id="trailer-container" style="display: none;">
+        <iframe class="trailer-player" width="560" height="315" src="<%= @movie.trailer_url %>" allowfullscreen></iframe>
+      </div>
+    </div>
+  <% end %>
+  
   <!-- User's Rating or Rating Form -->
   <% if user_signed_in? %>
     <% if current_user_rating = @movie.ratings.find_by(user: current_user) %>
@@ -74,3 +84,9 @@
     <%= button_to "Destroy this movie", @movie, method: :delete %>
   </div>
 </div>
+
+<script>
+  document.getElementById('watch-trailer')?.addEventListener('click', function() {
+    document.getElementById('trailer-container').style.display = 'block';
+  });
+</script>

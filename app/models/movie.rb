@@ -6,6 +6,8 @@ class Movie < ApplicationRecord
   has_many :watchlisting_users, through: :watchlist_items, source: :user
   validates :title, presence: true
   def average_rating
-    ratings.average(:stars).to_f.round(1)
+    return 0 if ratings.empty?
+    (ratings.sum(:stars) / ratings.count.to_f).round(1)
   end
 end
+

@@ -20,6 +20,11 @@ When("I view the movie {string}") do |movie_title|
   visit movie_path(Movie.find_by(title: movie_title))
 end
 
+When('I view its details') do
+  movie = Movie.find_by(title: "Interstellar")
+  visit movie_path(movie)
+end
+
 Then("the average rating should be {string}") do |expected_rating|
   expect(page).to have_content(expected_rating)
 end
