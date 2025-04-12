@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "Comment Feature", type: :feature do
   let!(:genre) { Genre.create!(name: "Sci-Fi") }
-  let!(:movie) { Movie.create!(title: "Inception", genres: [genre]) }
+  let!(:movie) { Movie.create!(title: "Inception") }
   
   before(:each) do
     # Sign up Alice
