@@ -49,11 +49,6 @@ When("I click on the {string} play button") do |button_text|
 end
 
 Then("the trailer should play in a pop-up or embedded player") do
-  # Make the container visible
-  page.execute_script("document.getElementById('trailer-container').style.display = 'block';")
-  # Short pause
-  sleep(0.5)
-  # Now check for the visible iframe
   expect(page).to have_selector('iframe.trailer-player')
 end
 
