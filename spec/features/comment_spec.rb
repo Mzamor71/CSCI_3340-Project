@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.feature "Comment Feature", type: :feature do
-  let!(:movie) { Movie.create!(title: "Inception", genre: Genre.create!(name: "Sci-Fi")) }
+  let!(:genre) { Genre.create!(name: "Sci-Fi") }
+  let!(:movie) { Movie.create!(title: "Inception", genres: [genre]) }
   
   before(:each) do
     # Sign up Alice
