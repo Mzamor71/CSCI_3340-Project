@@ -13,7 +13,7 @@ RSpec.feature "Comment Feature", type: :feature do
     login_as(charlie)
     visit movie_path(movie)
 
-    within(".rating-#{rating.id}") do
+    within(".rating") do
       fill_in "Your Comment", with: "Great rating! I totally agree."
       click_button "Submit Comment"
     end
@@ -27,7 +27,7 @@ RSpec.feature "Comment Feature", type: :feature do
     login_as(user2)
     visit movie_path(movie)
 
-    within(".comment-#{comment.id}") do
+    within(".comment") do
       click_button "Like"
     end
 
