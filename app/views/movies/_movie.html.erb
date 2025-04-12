@@ -1,27 +1,20 @@
 <div id="<%= dom_id movie %>">
-  <p>
-    <strong>Title:</strong>
-    <%= movie.title %>
+  <h5 class="card-title"><%= movie.title %></h5>
+
+  <p class="card-text">
+    <strong>Description:</strong> <%= movie.description %>
   </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= movie.description %>
+  <p class="card-text">
+    <strong>Director:</strong> <%= movie.director %>
   </p>
 
-  <p>
-    <strong>Director:</strong>
-    <%= movie.director %>
+  <p class="card-text">
+    <strong>Release Year:</strong> <%= movie.release_year %>
   </p>
 
-  <p>
-    <strong>Release year:</strong>
-    <%= movie.release_year %>
+  <p class="card-text">
+    <strong>Trailer:</strong>
+    <%= link_to movie.trailer_url, movie.trailer_url, target: "_blank", class: "link-primary" %>
   </p>
-
-  <p>
-    <strong>Trailer url:</strong>
-    <%= movie.trailer_url %>
-  </p>
-
 </div>

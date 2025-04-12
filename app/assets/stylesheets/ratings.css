@@ -1,0 +1,38 @@
+/* ratings.scss */
+
+/* make sure this file is imported by application.scss:
+   @import "ratings"; */
+
+   .star-rating {
+    /* RTL + bidi trick to let “~” select leftwards */
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    font-size: 2rem;      /* star size */
+    display: inline-block;
+  }
+  
+  .star-rating input {
+    display: none;        /* hide the radios */
+  }
+  
+  .star-rating label {
+    color: #ddd;          /* un‐filled star */
+    cursor: pointer;
+    margin: 0 0.1rem;
+    transition: color 0.2s;
+  }
+  
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #ffc107;       /* hover‐filled (gold) */
+  }
+  
+  .star-rating input:checked ~ label {
+    color: #fd7e14;       /* selected‐filled (deep orange) */
+  }
+  
+  /* Optional: keep selection on mouseout */
+  .star-rating input:focus ~ label {
+    outline: 1px dotted #333;
+  }
+  

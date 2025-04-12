@@ -1,12 +1,16 @@
-<% content_for :title, "Editing comment" %>
+<% content_for :title, "Edit Comment" %>
 
-<h1>Editing comment</h1>
+<div class="container my-4">
+  <h1 class="mb-4">✏️ Edit Comment</h1>
 
-<%= render "form", comment: @comment %>
+  <%= render "form", comment: @comment %>
 
-<br>
-
-<div>
-  <%= link_to "Show this comment", @comment %> |
-  <%= link_to "Back to comments", comments_path %>
+  <div class="mt-3 d-flex gap-2">
+    <%= link_to "⬅️ Back to Comment",
+                comment_path(@comment),
+                class: "btn btn-secondary" %>
+    <%= link_to "Back to All Comments",
+                comments_path,
+                class: "btn btn-outline-dark" %>
+  </div>
 </div>

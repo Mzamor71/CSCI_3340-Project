@@ -1,93 +1,139 @@
-<!-- app/views/movies/show.html.erb -->
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @movie.title %>
 
-<div class="movie-details">
-  <h1 class="movie-title"><%= @movie.title %></h1>
-  
-  <!-- Movie details -->
-  <p><strong>Director:</strong> <%= @movie.director %></p>
-  <p><strong>Release Year:</strong> <%= @movie.release_year %></p>
-  <p><strong>Description:</strong> <%= @movie.description %></p>
-  
-  <!-- Genres -->
-  <% if @movie.genres.any? %>
-    <p><strong>Genres:</strong> <%= @movie.genres.pluck(:name).join(", ") %></p>
+<div class="container my-5">
+  <% if notice %>
+    <div class="alert alert-success"><%= notice %></div>
   <% end %>
-  
-  <!-- Average Rating -->
-  <div class="overall-rating">
-    <h3>Average Rating: <%= @movie.average_rating > 0 ? "#{@movie.average_rating} stars" : 'No ratings yet' %></h3>
-  </div>
-  
-<!-- Movie Trailer -->
-<% if @movie.trailer_url.present? %>
-  <div class="trailer-section">
-    <%= button_to "Watch Trailer", "#", method: :get, id: "watch-trailer", class: "trailer-button", 
-        onclick: "document.getElementById('trailer-container').style.display = 'block'; return false;" %>
-    <div id="trailer-container" style="<%= Rails.env.test? ? '' : 'display: none;' %>">
-      <iframe class="trailer-player" width="560" height="315" src="<%= @movie.trailer_url %>" allowfullscreen></iframe>
-    </div>
-  </div>
-<% end %>
-  
-  <!-- User's Rating or Rating Form -->
-  <% if user_signed_in? %>
-    <% if current_user_rating = @movie.ratings.find_by(user: current_user) %>
-      <div class="user-rating">
-        <p>Your rating: <%= current_user_rating.stars %> stars</p>
-        <%= link_to "Edit Rating", edit_rating_path(current_user_rating), class: "btn btn-secondary" %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <!-- Movie Details Card -->
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h1 class="card-title"><%= @movie.title %></h1>
+          <p class="card-text"><strong>Director:</strong> <%= @movie.director %></p>
+          <p class="card-text"><strong>Release Year:</strong> <%= @movie.release_year %></p>
+          <p class="card-text"><strong>Description:</strong> <%= @movie.description %></p>
+          <% if @movie.genres.any? %>
+            <p class="card-text">
+              <strong>Genres:</strong>
+              <%= @movie.genres.pluck(:name).join(", ") %>
+            </p>
+          <% end %>
+          <div class="mt-3">
+            <h5>Average Rating:</h5>
+            <% if @movie.average_rating.to_f > 0 %>
+              <p class="fs-4">⭐ <%= @movie.average_rating %> / 5</p>
+            <% else %>
+              <p class="text-muted">No ratings yet</p>
+            <% end %>
+          </div>
+        </div>
       </div>
-    <% else %>
-      <h3>Rate this movie:</h3>
-      <%= render 'ratings/form', rating: @movie.ratings.build, movie: @movie %>
-    <% end %>
-    
-    <!-- Watchlist Button Section -->
-    <div class="watchlist-actions">
-      <% if current_user.watchlist_items.exists?(movie_id: @movie.id) %>
-        <%= button_to "Remove from Watchlist", movie_watchlist_item_path(@movie, current_user.watchlist_items.find_by(movie_id: @movie.id)), 
-                    method: :delete, class: "btn btn-danger" %>
-      <% else %>
-        <%= button_to "Add to Watchlist", movie_watchlist_items_path(@movie), 
-                    method: :post, class: "btn btn-primary" %>
+
+      <!-- Trailer Section -->
+      <% if @movie.trailer_url.present? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            Trailer
+          </div>
+          <div class="card-body text-center">
+            <button id="watch-trailer" class="btn btn-outline-primary mb-3">
+              ▶️ Watch Trailer
+            </button>
+            <div id="trailer-container" style="display: none;">
+              <div class="ratio ratio-16x9">
+                <iframe src="<%= @movie.trailer_url %>" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
       <% end %>
-    </div>
-  <% else %>
-    <p><%= link_to "Log in to rate this movie", new_user_session_path %></p>
-  <% end %>
-  
-  <!-- All Ratings and Comments -->
-  <div class="ratings-section">
-    <h3>All Ratings</h3>
-    <% @movie.ratings.includes(:user, comments: :user).each do |rating| %>
-      <div class="rating-item">
-        <p><%= rating.user.username %> rated it <%= rating.stars %> stars</p>
-        
-        <div class="comments-section">
-          <% rating.comments.each do |comment| %>
-            <div class="comment-item">
-              <span class="user-info"><%= comment.user.username %></span>: <%= comment.content %>
-              <p class="likes-count"><%= comment.likes_count %> likes</p>
-              <%= button_to "Like", like_comment_path(comment), method: :post, class: "like-button" %>
+
+      <!-- Ratings & Comments -->
+      <div class="card mb-4">
+        <div class="card-header">
+          All Ratings & Comments
+        </div>
+        <div class="card-body">
+          <% @movie.ratings.includes(:user, comments: :user).each do |rating| %>
+            <div class="mb-3 pb-3 border-bottom">
+              <p>
+                <strong><%= rating.user.username %></strong>
+                rated it
+                <span class="badge bg-warning text-dark"><%= rating.stars %> ⭐</span>
+              </p>
+              <% rating.comments.each do |comment| %>
+                <div class="ps-3 mb-2">
+                  <p class="mb-1">
+                    <strong><%= comment.user.username %>:</strong>
+                    <%= comment.content %>
+                  </p>
+                  <%= button_to "👍 #{comment.likes_count}", like_comment_path(comment),
+                                method: :post,
+                                class: "btn btn-sm btn-outline-secondary" %>
+                </div>
+              <% end %>
+              <%= link_to "Add Comment", new_comment_path(rating_id: rating.id),
+                          class: "btn btn-sm btn-outline-primary" %>
             </div>
           <% end %>
         </div>
-        
-        <%= link_to "Comment", new_comment_path(rating_id: rating.id) %>
       </div>
-    <% end %>
-  </div>
+    </div>
 
-  <div>
-    <%= link_to "Edit this movie", edit_movie_path(@movie) %> |
-    <%= link_to "Back to movies", movies_path %>
+    <div class="col-md-4">
+      <!-- User Actions -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <% if user_signed_in? %>
+            <% if (ur = @movie.ratings.find_by(user: current_user)) %>
+              <p>Your rating: <span class="badge bg-info text-dark"><%= ur.stars %> ⭐</span></p>
+              <%= link_to "Edit Rating", edit_rating_path(ur),
+                          class: "btn btn-sm btn-secondary mb-2" %>
+            <% else %>
+              <h5>Rate this movie:</h5>
+              <%= render 'ratings/form', rating: @movie.ratings.build, movie: @movie %>
+            <% end %>
 
-    <%= button_to "Destroy this movie", @movie, method: :delete %>
+            <hr>
+
+            <% if current_user.watchlist_items.exists?(movie_id: @movie.id) %>
+              <%= button_to "Remove from Watchlist",
+                            movie_watchlist_item_path(@movie, current_user.watchlist_items.find_by(movie_id: @movie.id)),
+                            method: :delete,
+                            class: "btn btn-danger w-100 mb-2" %>
+            <% else %>
+              <%= button_to "Add to Watchlist",
+                            movie_watchlist_items_path(@movie),
+                            method: :post,
+                            class: "btn btn-primary w-100 mb-2" %>
+            <% end %>
+          <% else %>
+            <p>
+              <%= link_to "Log in to rate & save", new_user_session_path,
+                          class: "btn btn-outline-primary w-100" %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Edit / Delete -->
+      <div class="d-grid gap-2">
+        <%= link_to "✏️ Edit Movie", edit_movie_path(@movie), class: "btn btn-outline-secondary" %>
+        <%= button_to "🗑️ Delete Movie", @movie,
+                      method: :delete,
+                      data: { confirm: "Are you sure?" },
+                      class: "btn btn-outline-danger" %>
+        <%= link_to "⬅️ Back to List", movies_path, class: "btn btn-outline-dark" %>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   document.getElementById('watch-trailer')?.addEventListener('click', function() {
-    document.getElementById('trailer-container').style.display = 'block';
+    const container = document.getElementById('trailer-container');
+    container.style.display = container.style.display === 'none' ? 'block' : 'none';
   });
 </script>
