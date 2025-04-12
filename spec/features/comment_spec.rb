@@ -1,4 +1,5 @@
 require 'rails_helper'
+include Warden::Test::Helpers
 
 RSpec.feature "Comment Feature", type: :feature do
   let!(:genre) { Genre.create!(name: "Sci-Fi") }
