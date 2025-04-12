@@ -29,13 +29,8 @@
   <div class="mt-4">
     <% if @movie %>
       <%= link_to "Back to movie", movie_path(@movie), class: "btn btn-primary" %>
-      <%= link_to "➕ New Comment",
-                  new_comment_path(movie_id: @movie.id),
-                  class: "btn btn-success" %>
     <% else %>
-      <%= link_to "➕ New Comment",
-                  new_comment_path,
-                  class: "btn btn-success" %>
+      <%= link_to "Back to Movies", movies_path, class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>

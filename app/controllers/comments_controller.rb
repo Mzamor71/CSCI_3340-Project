@@ -35,20 +35,20 @@ end
   end
 
   # POST /comments or /comments.json
-def create
-  @comment = Comment.new(comment_params)
-  @movie = @comment.rating.movie
-
-  respond_to do |format|
-    if @comment.save
-      format.html { redirect_to movie_comments_path(@movie), notice: "Comment was successfully created." }
-      format.json { render :show, status: :created, location: @comment }
-    else
-      format.html { render :new, status: :unprocessable_entity }
-      format.json { render json: @comment.errors, status: :unprocessable_entity }
+  def create
+    @comment = Comment.new(comment_params)
+    @movie = @comment.rating.movie
+  
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to movie_comments_path(@movie), notice: "Comment was successfully created." }
+        format.json { render :show, status: :created, location: @comment }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      end
     end
   end
-end
 
   # PATCH/PUT /comments/1 or /comments/1.json
   def update
