@@ -1,16 +1,24 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "All Ratings" %>
 
-<% content_for :title, "Ratings" %>
-
-<h1>Ratings</h1>
-
-<div id="ratings">
-  <% @ratings.each do |rating| %>
-    <%= render rating %>
-    <p>
-      <%= link_to "Show this rating", rating %>
-    </p>
+<div class="container my-4">
+  <% if notice %>
+    <div class="alert alert-success"><%= notice %></div>
   <% end %>
-</div>
 
-<%= link_to "New rating", new_rating_path %>
+  <h1 class="mb-4">⭐ All Ratings</h1>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @ratings.each do |rating| %>
+      <div class="col">
+        <%= render rating %>
+        <div class="mt-2">
+          <%= link_to "View Details", rating_path(rating), class: "btn btn-outline-primary btn-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "➕ New Rating", new_rating_path, class: "btn btn-success" %>
+  </div>
+</div>

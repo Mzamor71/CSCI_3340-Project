@@ -1,17 +1,19 @@
-<div id="<%= dom_id rating %>">
-  <p>
-    <strong>User:</strong>
-    <%= rating.user_id %>
-  </p>
+<!-- app/views/ratings/_rating.html.erb -->
+<div id="<%= dom_id(rating) %>" class="card mb-3 shadow-sm">
+  <div class="card-body">
+    <h6 class="card-subtitle mb-2 text-muted">
+      Rated by 
+      <%= link_to rating.user.username, user_path(rating.user), class: "text-decoration-none" %>
+    </h6>
 
-  <p>
-    <strong>Movie:</strong>
-    <%= rating.movie_id %>
-  </p>
+    <p class="card-text mb-1">
+      <strong>Movie:</strong>
+      <%= link_to rating.movie.title, movie_path(rating.movie), class: "link-primary" %>
+    </p>
 
-  <p>
-    <strong>Stars:</strong>
-    <%= rating.stars %>
-  </p>
-
+    <p class="card-text">
+      <strong>Stars:</strong>
+      <span class="badge bg-warning text-dark"><%= rating.stars %> ⭐</span>
+    </p>
+  </div>
 </div>
