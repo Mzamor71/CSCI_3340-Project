@@ -1,8 +1,12 @@
 class SearchController < ApplicationController
   def index
     if params[:search].present?
-      # Use case-insensitive LIKE instead of ILIKE for SQLite compatibility
-      @movies = Movie.where("lower(title) LIKE ?", "%#{params[:search].downcase}%")
+      search_term = "%#{params[:search].downcase}%"
+      # Search by title OR by genre name
+      @movies = Movie.left_joins(:genres)
+                    .where("lower(movies.title) LIKE ? OR lower(genres.name) LIKE ?", 
+                           search_term, search_term)
+                    .distinct
     elsif params[:genre].present?
       genre = Genre.find(params[:genre])
       @movies = genre.movies

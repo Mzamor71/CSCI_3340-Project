@@ -1,0 +1,19 @@
+<h1>My Watchlist</h1>
+
+<% if @watchlist_items.empty? %>
+  <p>Your watchlist is empty. Browse movies to add some!</p>
+<% else %>
+  <div class="watchlist-container">
+    <% @watchlist_items.each do |item| %>
+      <div class="watchlist-movie">
+        <h3><%= link_to item.movie.title, movie_path(item.movie) %></h3>
+        <p><strong>Director:</strong> <%= item.movie.director %></p>
+        <p><strong>Release Year:</strong> <%= item.movie.release_year %></p>
+        <%= button_to "Remove", movie_watchlist_item_path(item.movie, item), 
+                    method: :delete, class: "btn btn-danger" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= link_to "Browse Movies", movies_path, class: "btn btn-primary" %>

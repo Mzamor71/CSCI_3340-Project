@@ -1,30 +1,37 @@
-<div class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <%= form_with(model: comment, local: true) do |form| %>
-      <% if comment.errors.any? %>
-        <div class="alert alert-danger">
-          <h5 class="alert-heading">
-            <%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:
-          </h5>
-          <ul class="mb-0">
-            <% comment.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+<%= form_with(model: comment) do |form| %>
+  <% if comment.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h4>
+      <ul>
+        <% comment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-      <%= form.hidden_field :user_id,  value: current_user.id %>
-      <%= form.hidden_field :rating_id %>
+  <%= form.hidden_field :user_id %>
+  
+  <% if comment.rating_id.present? %>
+    <%= form.hidden_field :rating_id %>
+  <% else %>
+    <div class="mb-3">
+      <%= form.label :rating_id, "Select a Movie Rating to Comment on:", class: "form-label" %>
+      <%= form.collection_select :rating_id, 
+                                 Rating.includes(:movie, :user).order("movies.title"), 
+                                 :id, 
+                                 ->(rating) { "#{rating.movie.title} - Rated #{rating.stars}★ by #{rating.user.username}" }, 
+                                 { prompt: "Select a rating to comment on" }, 
+                                 { class: "form-select", required: true } %>
+    </div>
+  <% end %>
 
-      <div class="mb-3">
-        <%= form.label :content, "Your Comment", class: "form-label" %>
-        <%= form.text_area :content, class: "form-control", rows: 3 %>
-      </div>
-
-      <div class="d-grid">
-        <%= form.submit "Submit Comment", class: "btn btn-primary" %>
-      </div>
-    <% end %>
+  <div class="mb-3">
+    <%= form.label :content, "Your Comment:", class: "form-label" %>
+    <%= form.text_area :content, rows: 4, class: "form-control", required: true %>
   </div>
-</div>
+
+  <div class="actions">
+    <%= form.submit "Submit Comment", class: "btn btn-primary" %>
+  </div>
+<% end %>

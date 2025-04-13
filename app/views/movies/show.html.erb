@@ -32,28 +32,51 @@
       </div>
 
       <!-- Trailer Section -->
-      <% if @movie.trailer_url.present? %>
-        <div class="card mb-4">
-          <div class="card-header">
-            Trailer
-          </div>
-          <div class="card-body text-center">
-            <button id="watch-trailer" class="btn btn-outline-primary mb-3">
-              ▶️ Watch Trailer
-            </button>
-            <div id="trailer-container" style="display: none;">
-              <div class="ratio ratio-16x9">
-                <iframe src="<%= @movie.trailer_url %>" allowfullscreen></iframe>
-              </div>
-            </div>
+<% if @movie.trailer_url.present? %>
+  <div class="card mb-4">
+    <div class="card-header">
+      Trailer
+    </div>
+    <div class="card-body text-center">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#trailerModal">
+        ▶️ Watch Trailer
+      </button>
+      
+    
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="trailerModal" tabindex="-1" aria-labelledby="trailerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="trailerModalLabel"><%= @movie.title %> - Trailer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="ratio ratio-16x9">
+            <iframe src="<%= @movie.youtube_embed_url %>" 
+                    title="<%= @movie.title %> trailer" 
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
           </div>
         </div>
-      <% end %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 
       <!-- Ratings & Comments -->
       <div class="card mb-4">
-        <div class="card-header">
-          All Ratings & Comments
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>All Ratings & Comments</span>
+          <%= link_to "View All Comments", movie_comments_path(@movie), class: "btn btn-sm btn-outline-primary" %>
         </div>
         <div class="card-body">
           <% @movie.ratings.includes(:user, comments: :user).each do |rating| %>
@@ -132,8 +155,20 @@
 </div>
 
 <script>
-  document.getElementById('watch-trailer')?.addEventListener('click', function() {
-    const container = document.getElementById('trailer-container');
-    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+  document.addEventListener('DOMContentLoaded', function() {
+    var trailerBtn = document.getElementById('watch-trailer');
+    var trailerContainer = document.getElementById('trailer-container');
+    
+    if (trailerBtn && trailerContainer) {
+      trailerBtn.onclick = function(e) {
+        e.preventDefault();
+        if (trailerContainer.style.display === 'none' || !trailerContainer.style.display) {
+          trailerContainer.style.display = 'block';
+        } else {
+          trailerContainer.style.display = 'none';
+        }
+        return false;
+      };
+    }
   });
 </script>

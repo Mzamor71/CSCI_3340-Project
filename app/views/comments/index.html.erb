@@ -1,11 +1,17 @@
-<% content_for :title, "All Comments" %>
+<% content_for :title, @movie ? "Comments for #{@movie.title}" : "All Comments" %>
 
 <div class="container my-4">
   <% if notice %>
     <div class="alert alert-success"><%= notice %></div>
   <% end %>
 
-  <h1 class="mb-4">💬 All Comments</h1>
+  <h1 class="mb-4">
+    <% if @movie %>
+      💬 Comments for "<%= @movie.title %>"
+    <% else %>
+      💬 All Comments
+    <% end %>
+  </h1>
 
   <div class="row row-cols-1 g-3">
     <% @comments.each do |comment| %>
@@ -21,8 +27,10 @@
   </div>
 
   <div class="mt-4">
-    <%= link_to "➕ New Comment",
-                new_comment_path,
-                class: "btn btn-success" %>
+    <% if @movie %>
+      <%= link_to "Back to movie", movie_path(@movie), class: "btn btn-primary" %>
+    <% else %>
+      <%= link_to "Back to Movies", movies_path, class: "btn btn-primary" %>
+    <% end %>
   </div>
 </div>

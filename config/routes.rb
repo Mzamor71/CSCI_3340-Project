@@ -1,26 +1,25 @@
 Rails.application.routes.draw do
+  get 'my_watchlist', to: 'watchlist_items#my_watchlist', as: :my_watchlist
+  
+  # Fix the devise_for line - remove the only: [:show]
+  devise_for :users
+  
+  # Add this if you want user profiles later
+  resources :users, only: [:show]
+  
   resources :watchlist_items
   resources :comments
   resources :ratings
   resources :genres
   resources :movies do
-    resources :ratings # Added this line to nest ratings under movies
+    resources :ratings
     resources :reviews, only: [:new, :create]
     resources :watchlist_items, only: [:create, :destroy]
+    get 'comments', to: 'comments#index', as: 'comments'
   end
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # The rest of your routes remain the same
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
   get '/search', to: 'search#index'
 
   resources :ratings, only: [:show] do
@@ -30,6 +29,7 @@ Rails.application.routes.draw do
   resources :comments do
     member do
       post 'like'
+      delete 'like', to: 'comments#unlike'
     end
   end
 

@@ -45,6 +45,15 @@
           <div class="card-body">
             <%= render movie %>
             <p><strong>Average Rating:</strong> ⭐ <%= movie.average_rating || "N/A" %></p>
+            
+            <% if movie.genres.any? %>
+              <p>
+                <strong>Genres:</strong>
+                <% movie.genres.each do |genre| %>
+                  <span class="badge bg-secondary me-1"><%= genre.name %></span>
+                <% end %>
+              </p>
+            <% end %>
           </div>
           <div class="card-footer">
             <%= link_to "🎬 View Details", movie_path(movie), class: "btn btn-outline-primary btn-sm" %>
