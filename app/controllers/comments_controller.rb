@@ -81,8 +81,19 @@ end
 
   def like
     @comment = Comment.find(params[:id])
-    @comment.increment!(:likes_count)
-    redirect_back(fallback_location: root_path, notice: "Comment liked successfully.")
+    like = @comment.comment_likes.find_by(user: current_user)
+    
+    if like
+      # User already liked this comment, so unlike it
+      like.destroy
+      flash[:notice] = "You've unliked the comment."
+    else
+      # User hasn't liked this comment yet, add a like
+      @comment.comment_likes.create(user: current_user)
+      flash[:notice] = "You've liked the comment."
+    end
+    
+    redirect_back(fallback_location: root_path)
   end
   
   

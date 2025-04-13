@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_11_002127) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_13_012640) do
+  create_table "comment_likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_comment_likes_on_comment_id"
+    t.index ["user_id"], name: "index_comment_likes_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "rating_id", null: false
@@ -77,6 +86,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_11_002127) do
     t.index ["user_id"], name: "index_watchlist_items_on_user_id"
   end
 
+  add_foreign_key "comment_likes", "comments"
+  add_foreign_key "comment_likes", "users"
   add_foreign_key "comments", "ratings"
   add_foreign_key "comments", "users"
   add_foreign_key "ratings", "movies"
