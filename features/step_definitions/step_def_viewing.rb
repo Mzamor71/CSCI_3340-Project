@@ -47,36 +47,23 @@ Given("I view details for the movie {string}") do |movie_title|
   visit movie_path(movie)
 end
 
-
 When("I click on the {string} play button") do |button_text|
-  # More specific selector for the watch trailer button
-  if page.has_button?("Watch Trailer") || page.has_button?("watch-trailer")
-    click_button("Watch Trailer")
-  elsif page.has_link?(button_text)
-    click_link(button_text)
-  elsif page.has_css?("#watch-trailer")
-    find("#watch-trailer").click
-  else
-    # Add debugging info
-    puts "Available buttons: #{page.all('button').map(&:text)}"
-    pending "Could not find trailer button with current selectors"
-  end
+  # In your current implementation, you're using a Bootstrap modal with data-bs-toggle
+  click_button("▶️ Watch Trailer")
 end
 
 Then("the trailer should play in a pop-up or embedded player") do
-  # First check if iframe exists at all (even if hidden)
-  expect(page).to have_selector('iframe', visible: :all)
-  
-  # Then check if it becomes visible after clicking
-  expect(page).to have_selector('#trailer-container iframe', visible: :all) ||
-                 have_selector('.video-player') ||
-                 have_selector('.trailer') ||
-                 have_selector('[data-trailer]')
+  # Check if the modal is present and visible
+  expect(page).to have_selector('#trailerModal', visible: true) ||
+                 have_selector('#trailerModal iframe', visible: true)
+
+  within('#trailerModal') do
+    expect(page).to have_selector('iframe')
+  end
 end
 
-
 Then("I should see the title, description, director, and release year") do
-  movie = Movie.last # Assuming we're testing with the most recently created movie
+  movie = Movie.last 
   expect(page).to have_content(movie.title)
   expect(page).to have_content(movie.description) if movie.description
   expect(page).to have_content(movie.director) if movie.director
