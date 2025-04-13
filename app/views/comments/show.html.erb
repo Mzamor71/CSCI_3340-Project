@@ -13,18 +13,21 @@
 
   <div class="d-flex flex-wrap gap-2">
     <%= link_to "Back to movie", movie_path(@comment.rating.movie), class: "btn btn-primary" %>
-    <%= link_to "✏️ Edit Comment",
-                edit_comment_path(@comment),
-                class: "btn btn-outline-secondary" %>
+    
+    <% if current_user && @comment.user_id == current_user.id %>
+      <%= link_to "✏️ Edit Comment",
+                  edit_comment_path(@comment),
+                  class: "btn btn-outline-secondary" %>
+
+      <%= button_to "🗑️ Delete Comment",
+                    @comment,
+                    method: :delete,
+                    data: { confirm: "Are you sure?" },
+                    class: "btn btn-danger" %>
+    <% end %>
 
     <%= link_to "⬅️ Back to Comments",
                 movie_comments_path(@comment.rating.movie),
                 class: "btn btn-outline-dark" %>
-
-    <%= button_to "🗑️ Delete Comment",
-                  @comment,
-                  method: :delete,
-                  data: { confirm: "Are you sure?" },
-                  class: "btn btn-danger" %>
   </div>
 </div>

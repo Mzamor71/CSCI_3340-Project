@@ -98,5 +98,12 @@ end
       params.require(:comment).permit ([:user_id, :rating_id, :content, :likes_count])
     end
 
+    def authorize_comment_owner!
+      unless @comment.user_id == current_user&.id
+        redirect_to movie_path(@comment.rating.movie), 
+                    alert: "You are not authorized to perform this action on someone else's comment."
+      end
+    end
+
    
 end
