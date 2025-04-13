@@ -29,7 +29,6 @@ Given("I navigate to the movie {string}") do |movie_title|
     description: "A movie for testing",
     director: "Test Director",
     release_year: 2020
-    
   )
   
   # Visit the movie page
@@ -38,21 +37,20 @@ Given("I navigate to the movie {string}") do |movie_title|
 end
 
 When("I submit a rating of {int} stars") do |stars|
-  # Find the rating form
-  within(".rating-form") do
-    find("label.star-#{stars}").click
-    click_button "Submit Rating"
-  end
+  # Find and click the appropriate star radio button
+  find("#rating_stars_#{stars}").click
+  # Submit the form
+  click_button "Submit Rating"
 end
 
 Then("I should see my rating displayed") do
-  within(".user-rating") do
-    expect(page).to have_content("Your rating")
-  end
+  # Check for a specific message or content indicating the user's rating
+  expect(page).to have_content("Your rating:")
 end
 
 Then("the overall rating should be updated") do
-  expect(page).to have_css(".overall-rating")
+  # Check for average rating section
+  expect(page).to have_content("Average Rating")
 end
 
 # Scenario: Editing a rating
@@ -66,8 +64,7 @@ Given("I have rated the movie {string} with {int} stars") do |movie_title, stars
   )
   
   # Get current user
-  user = User.find_by(email: "#{page.find('.user-info').text.strip.downcase}@example.com") rescue nil
-  user ||= User.last # Fallback
+  user = User.last # Use the last created user (from previous step)
   
   # Create or update the rating
   rating = Rating.find_by(user_id: user.id, movie_id: movie.id)
@@ -83,25 +80,22 @@ Given("I have rated the movie {string} with {int} stars") do |movie_title, stars
 end
 
 When("I update my rating to {int} stars") do |new_stars|
-  # Click on edit rating button
+  # Look for the "Edit Rating" link based on your actual HTML
   click_link "Edit Rating"
   
-  # Update the rating
-  within(".rating-form") do
-    find("label.star-#{new_stars}").click
-    click_button "Update Rating"
-  end
+  # Click the appropriate star radio button on the edit page
+  # For the edit page, the star selectors are different
+  find("label.star-#{new_stars} input[type='radio']").click
+  
+  click_button "Update Rating"
 end
 
 Then("I should see my updated rating displayed") do
-  within(".user-rating") do
-    expect(page).to have_content("Your rating")
-  end
+  # Check for the updated rating
+  expect(page).to have_content("Your rating:")
 end
 
 Then("the overall rating should be recalculated") do
-  expect(page).to have_css(".overall-rating")
-  
-  # Check that the average rating is displayed
+  # Check for average rating
   expect(page).to have_content("Average Rating")
 end
