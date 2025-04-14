@@ -17,6 +17,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_13_012640) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["comment_id"], name: "index_comment_likes_on_comment_id"
+    t.index ["user_id", "comment_id"], name: "index_comment_likes_on_user_id_and_comment_id", unique: true
     t.index ["user_id"], name: "index_comment_likes_on_user_id"
   end
 
